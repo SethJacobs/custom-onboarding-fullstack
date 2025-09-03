@@ -86,6 +86,12 @@ public class UserController {
         return ResponseEntity.ok(u);
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletResponse response) {
+        CookieUtil.clearUidCookie(response);
+        return ResponseEntity.ok(java.util.Map.of("message", "Logged out successfully"));
+    }
+
     @GetMapping
     public List<User> list() {
         return repo.findAll();

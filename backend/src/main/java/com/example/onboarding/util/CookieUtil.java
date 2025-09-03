@@ -11,4 +11,12 @@ public class CookieUtil {
         c.setMaxAge(60 * 60 * 24 * 30); // 30 days
         response.addCookie(c);
     }
+
+    public static void clearUidCookie(HttpServletResponse response) {
+        Cookie c = new Cookie("uid", "");
+        c.setPath("/");
+        c.setHttpOnly(false);
+        c.setMaxAge(0); // Expire immediately
+        response.addCookie(c);
+    }
 }
