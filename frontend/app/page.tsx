@@ -89,7 +89,7 @@ export default function OnboardingPage() {
           state: '',
           zip: '',
           birthdate: '',
-          currentStep: 1
+          currentStep: 2
         })
       });
       setUser(updated);

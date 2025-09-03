@@ -1,4 +1,4 @@
-package com.example.onboarding;
+package com.onboardingflow;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

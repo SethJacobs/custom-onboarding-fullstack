@@ -1,5 +1,8 @@
-package com.example.onboarding.configs;
+package com.onboardingflow.config;
 
+import com.onboardingflow.schema.OnboardingConfig;
+import com.onboardingflow.schema.PageComponent;
+import com.onboardingflow.repository.OnboardingConfigRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

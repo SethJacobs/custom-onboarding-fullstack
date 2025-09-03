@@ -1,5 +1,7 @@
-package com.example.onboarding.configs;
+package com.onboardingflow.api;
 
+import com.onboardingflow.schema.OnboardingConfig;
+import com.onboardingflow.repository.OnboardingConfigRepository;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,16 +28,16 @@ public class ConfigController {
     public ResponseEntity<?> update(@RequestBody @Valid OnboardingConfig cfg) {
         // enforce: each of page 2 and 3 must have at least one component
         if ((cfg.getPage2ComponentA() == null && cfg.getPage2ComponentB() == null) ||
-            (cfg.getPage3ComponentA() == null && cfg.getPage3ComponentB() == null)) {
+                (cfg.getPage3ComponentA() == null && cfg.getPage3ComponentB() == null)) {
             return ResponseEntity.badRequest().body("Each of page 2 and 3 must have at least one component");
         }
         // prevent duplicates on a page
         if (cfg.getPage2ComponentA() != null && cfg.getPage2ComponentB() != null &&
-            cfg.getPage2ComponentA() == cfg.getPage2ComponentB()) {
+                cfg.getPage2ComponentA() == cfg.getPage2ComponentB()) {
             return ResponseEntity.badRequest().body("Page 2 components must be unique");
         }
         if (cfg.getPage3ComponentA() != null && cfg.getPage3ComponentB() != null &&
-            cfg.getPage3ComponentA() == cfg.getPage3ComponentB()) {
+                cfg.getPage3ComponentA() == cfg.getPage3ComponentB()) {
             return ResponseEntity.badRequest().body("Page 3 components must be unique");
         }
 

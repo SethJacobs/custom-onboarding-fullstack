@@ -1,4 +1,4 @@
-package com.example.onboarding.config;
+package com.onboardingflow.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

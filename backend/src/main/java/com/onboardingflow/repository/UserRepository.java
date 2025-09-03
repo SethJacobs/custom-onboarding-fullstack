@@ -1,5 +1,6 @@
-package com.example.onboarding.user;
+package com.onboardingflow.repository;
 
+import com.onboardingflow.schema.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

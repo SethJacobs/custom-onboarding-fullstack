@@ -1,4 +1,4 @@
-package com.example.onboarding.configs;
+package com.onboardingflow.schema;
 
 public enum PageComponent {
     ABOUT_ME,

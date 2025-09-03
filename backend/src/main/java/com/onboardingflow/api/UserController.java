@@ -1,9 +1,11 @@
-package com.example.onboarding.user;
+package com.onboardingflow.api;
 
-import com.example.onboarding.user.dto.LoginRequest;
-import com.example.onboarding.user.dto.RegisterRequest;
-import com.example.onboarding.user.dto.UpdateUserRequest;
-import com.example.onboarding.util.CookieUtil;
+import com.onboardingflow.dto.LoginRequest;
+import com.onboardingflow.dto.RegisterRequest;
+import com.onboardingflow.dto.UpdateUserRequest;
+import com.onboardingflow.util.CookieUtil;
+import com.onboardingflow.schema.User;
+import com.onboardingflow.repository.UserRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -70,18 +72,40 @@ public class UserController {
     @PatchMapping("/me")
     public ResponseEntity<?> updateMe(@RequestBody UpdateUserRequest req, HttpServletRequest request) {
         Long uid = getUidFromCookie(request);
-        if (uid == null) return ResponseEntity.status(401).body("No uid cookie");
+        
+        if (uid == null){ 
+            return ResponseEntity.status(401).body("No uid cookie");
+        }
+
         Optional<User> ou = repo.findById(uid);
-        if (ou.isEmpty()) return ResponseEntity.status(404).body("User not found");
+        if (ou.isEmpty()) {
+             return ResponseEntity.status(404).body("User not found");
+        }
+
         User u = ou.get();
 
-        if (req.getAboutMe() != null) u.setAboutMe(req.getAboutMe());
-        if (req.getStreet() != null) u.setStreet(req.getStreet());
-        if (req.getCity() != null) u.setCity(req.getCity());
-        if (req.getState() != null) u.setState(req.getState());
-        if (req.getZip() != null) u.setZip(req.getZip());
-        if (req.getBirthdate() != null) u.setBirthdate(req.getBirthdate());
-        if (req.getCurrentStep() != null) u.setCurrentStep(req.getCurrentStep());
+        if (req.getAboutMe() != null) { 
+            u.setAboutMe(req.getAboutMe());
+        }
+        if (req.getStreet() != null) {
+            u.setStreet(req.getStreet());
+        } 
+        if (req.getCity() != null) { 
+            u.setCity(req.getCity());
+        }
+        if (req.getState() != null) {
+            u.setState(req.getState());
+        }
+        if (req.getZip() != null) {
+            u.setZip(req.getZip());
+        }
+        if (req.getBirthdate() != null) {
+            u.setBirthdate(req.getBirthdate());
+        }
+        if (req.getCurrentStep() != null) {
+            u.setCurrentStep(req.getCurrentStep());
+        }
+
         repo.save(u);
         return ResponseEntity.ok(u);
     }
@@ -98,10 +122,16 @@ public class UserController {
     }
 
     private Long getUidFromCookie(HttpServletRequest request) {
-        if (request.getCookies() == null) return null;
+        if (request.getCookies() == null) {
+            return null;
+        }
         for (Cookie c : request.getCookies()) {
             if ("uid".equals(c.getName())) {
-                try { return Long.parseLong(c.getValue()); } catch (Exception e) { return null; }
+                try { 
+                    return Long.parseLong(c.getValue()); 
+                } catch (Exception e) { 
+                    return null; 
+                }
             }
         }
         return null;
