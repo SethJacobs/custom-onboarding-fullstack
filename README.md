@@ -1,4 +1,4 @@
-# Custom Onboarding Flow (Spring Boot + Next.js)
+# Custom Onboarding Flow
 
 **Features**
 - Three-step wizard: Account → Page 2 → Page 3
