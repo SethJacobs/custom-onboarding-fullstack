@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://REPLACE_ME_RENDER_BACKEND.onrender.com/api/:path*"
+      "destination": "https://custom-onboarding-fullstack.onrender.com/api/:path*"
     }
   ]
 }
