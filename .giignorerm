@@ -1,0 +1,40 @@
+# ---- Global ----
+.DS_Store
+*.log
+*.tmp
+*.swp
+.env
+.env.local
+.env.*.local
+
+# ---- Node / Frontend ----
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/.vercel/
+frontend/.turbo/
+frontend/dist/
+
+# npm / yarn / pnpm caches
+frontend/package-lock.json
+frontend/pnpm-lock.yaml
+frontend/yarn.lock
+
+# ---- Java / Backend ----
+backend/target/
+backend/.mvn/
+backend/mvnw
+backend/mvnw.cmd
+
+# IDEs
+*.iml
+.idea/
+.vscode/
+.project
+.classpath
+.settings/
+
+# OS junk
+Thumbs.db
+ehthumbs.db
+ .giignore
