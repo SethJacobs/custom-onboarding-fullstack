@@ -16,7 +16,7 @@
 Requirements: Java 17, Maven
 ```bash
 cd backend
-mvn spring-boot:run    # or: mvn spring-boot:run
+mvn spring-boot:run
 ```
 The backend runs at `http://localhost:8080` and uses H2 (file) for easy persistence during dev.
 - H2 console at `http://localhost:8080/h2-console` (JDBC: `jdbc:h2:file:./data/onboarding`)
