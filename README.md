@@ -6,7 +6,7 @@
 - Progress is persisted server-side; users who return (cookie `uid`) resume where they left off
 - `/admin` (no auth) to configure which components appear on each page (2 & 3 must each have ≥1)
 - `/data` publicly shows a live table of user data (for testing)
-- Spring Boot 3 backend (H2 by default; switchable to Postgres), Next.js 14 frontend
+- Spring Boot backend (H2 by default; switchable to Postgres), Next.js 14 frontend
 
 ---
 
@@ -42,31 +42,12 @@ Visit:
 ## Production / Demo Deployment
 
 **Backend (Render / Railway)**
-- Build the Spring Boot JAR and deploy. Set env:
-  - `APP_FRONTEND_ORIGIN` = your deployed frontend origin (e.g., `https://your-frontend.vercel.app`)
-- For Postgres, set:
-  - `SPRING_DATASOURCE_URL=jdbc:postgresql://...`
-  - `SPRING_DATASOURCE_USERNAME=...`
-  - `SPRING_DATASOURCE_PASSWORD=...`
-  - Add dependency for Postgres driver if needed (and remove H2):
-    ```xml
-    <dependency>
-      <groupId>org.postgresql</groupId>
-      <artifactId>postgresql</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    ```
+- Use the docker file to build. Set env:
+  - `APP_FRONTEND_ORIGIN` = deployed frontend origin (e.g., `https://frontend.vercel.app`)
 
 **Frontend (Vercel)**
-- Set `NEXT_PUBLIC_API_BASE` to your backend URL.
+- Set `NEXT_PUBLIC_API_BASE` to backend URL.
 - Redeploy. The wizard, admin, and data pages should connect to the backend.
 
 ---
 
-## Notes & Trade-offs
-- For this exercise, auth is intentionally minimal. We store `uid` in a non-HTTPOnly cookie to re-identify the user and restore their step. In a real app, use secure, HttpOnly, SameSite cookies with a session/token.
-- Admin prevents empty pages and duplicate components per page. Ordering within a page was excluded by prompt.
-- You can A/B test different component layouts simply by changing Admin config.
-- Styles: Tailwind with a modern dark glassmorphism aesthetic.
-
-Good luck with the demo & submission!
