@@ -19,15 +19,50 @@ body {
 }
 
 .btn {
-  @apply inline-flex items-center justify-center rounded-xl px-4 py-2 font-medium transition;
+  @apply inline-flex items-center justify-center rounded-xl px-4 py-2 font-medium transition-all duration-200;
   background: linear-gradient(180deg,#2a3b73,#1a2a55);
   border: 1px solid rgba(255,255,255,.1);
 }
 
-.btn:hover { filter: brightness(1.08); }
-.input {
-  @apply w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 outline-none;
+.btn:hover { 
+  filter: brightness(1.15);
+  box-shadow: 0 0 20px rgba(110, 168, 254, 0.3);
+  transform: translateY(-1px);
 }
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.input {
+  @apply w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 outline-none transition-all duration-200;
+}
+
+.input:focus {
+  border-color: rgba(110, 168, 254, 0.5);
+  box-shadow: 0 0 0 3px rgba(110, 168, 254, 0.1);
+}
+
+.input-valid {
+  border-color: rgba(34, 197, 94, 0.5);
+}
+
+.input-invalid {
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+.validation-icon {
+  @apply absolute right-3 top-1/2 transform -translate-y-1/2 text-sm;
+}
+
+.validation-valid {
+  @apply text-green-400;
+}
+
+.validation-invalid {
+  @apply text-red-400;
+}
+
 .label { @apply text-sm text-white/70 mb-1; }
 .step-active { @apply text-white font-semibold; }
 .step-inactive { @apply text-white/50; }

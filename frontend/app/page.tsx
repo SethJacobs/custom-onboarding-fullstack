@@ -4,9 +4,6 @@ import Stepper from './components/Stepper';
 import { api, User, Config } from './lib/api';
 
 type RegisterForm = { email: string; password: string; }
-type AboutForm = { aboutMe?: string; }
-type AddressForm = { street?: string; city?: string; state?: string; zip?: string; }
-type BirthForm = { birthdate?: string; }
 
 type Comp = 'ABOUT_ME' | 'ADDRESS' | 'BIRTHDATE';
 
@@ -281,6 +278,11 @@ function AccountForm({ onSubmit }: { onSubmit: (f: RegisterForm) => Promise<void
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [emailTouched, setEmailTouched] = useState(false);
+  const [passwordTouched, setPasswordTouched] = useState(false);
+
+  const isEmailValid = email.includes('@') && email.includes('.') && email.length > 5;
+  const isPasswordValid = password.length >= 6;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -297,11 +299,53 @@ function AccountForm({ onSubmit }: { onSubmit: (f: RegisterForm) => Promise<void
     <form onSubmit={handleSubmit} className="space-y-3">
       <div>
         <div className="label">Email</div>
-        <input className="input" type="email" value={email} onChange={e => setEmail(e.target.value)} required disabled={submitting} />
+        <div className="relative">
+          <input 
+            className={`input ${emailTouched ? (isEmailValid ? 'input-valid' : 'input-invalid') : ''}`}
+            type="email" 
+            value={email} 
+            onChange={e => setEmail(e.target.value)}
+            onBlur={() => setEmailTouched(true)}
+            required 
+            disabled={submitting} 
+          />
+          {emailTouched && (
+            <div className="validation-icon">
+              {isEmailValid ? (
+                <span className="validation-valid">✓</span>
+              ) : (
+                <span className="validation-invalid">✗</span>
+              )}
+            </div>
+          )}
+        </div>
       </div>
       <div>
         <div className="label">Password</div>
-        <input className="input" type="password" value={password} onChange={e => setPassword(e.target.value)} required minLength={6} disabled={submitting} />
+        <div className="relative">
+          <input 
+            className={`input ${passwordTouched ? (isPasswordValid ? 'input-valid' : 'input-invalid') : ''}`}
+            type="password" 
+            value={password} 
+            onChange={e => setPassword(e.target.value)}
+            onBlur={() => setPasswordTouched(true)}
+            required 
+            minLength={6} 
+            disabled={submitting} 
+          />
+          {passwordTouched && (
+            <div className="validation-icon">
+              {isPasswordValid ? (
+                <span className="validation-valid">✓</span>
+              ) : (
+                <span className="validation-invalid">✗</span>
+              )}
+            </div>
+          )}
+        </div>
+        {passwordTouched && !isPasswordValid && (
+          <div className="text-xs text-red-400 mt-1">Password must be at least 6 characters</div>
+        )}
       </div>
       <button className="btn" type="submit" disabled={submitting}>
         {submitting ? 'Saving...' : 'Save & Continue'}
@@ -338,18 +382,59 @@ function Address({ user, formData, onChange }: { user: User | null; formData: Pa
   const state = formData.state !== undefined ? formData.state : (user?.state || '');
   const zip = formData.zip !== undefined ? formData.zip : (user?.zip || '');
 
+  const isStreetValid = street.trim().length > 0;
+  const isCityValid = city.trim().length > 0;
+  const isStateValid = state.trim().length > 0;
+  const isZipValid = zip.trim().length > 0;
+
   const handleChange = (field: string, value: string) => {
     onChange({ [field]: value });
   };
 
   return (
     <div className="space-y-3">
-      <div><div className="label">Street *</div><input className="input" value={street} onChange={e => handleChange('street', e.target.value)} /></div>
-      <div className="grid grid-cols-2 gap-3">
-        <div><div className="label">City *</div><input className="input" value={city} onChange={e => handleChange('city', e.target.value)} /></div>
-        <div><div className="label">State *</div><input className="input" value={state} onChange={e => handleChange('state', e.target.value)} /></div>
+      <div>
+        <div className="label">Street * {isStreetValid && <span className="text-green-400">✓</span>}</div>
+        <div className="relative">
+          <input 
+            className={`input ${street ? (isStreetValid ? 'input-valid' : 'input-invalid') : ''}`}
+            value={street} 
+            onChange={e => handleChange('street', e.target.value)} 
+          />
+        </div>
       </div>
-      <div><div className="label">Zip *</div><input className="input" value={zip} onChange={e => handleChange('zip', e.target.value)} /></div>
+      <div className="grid grid-cols-2 gap-3">
+        <div>
+          <div className="label">City * {isCityValid && <span className="text-green-400">✓</span>}</div>
+          <div className="relative">
+            <input 
+              className={`input ${city ? (isCityValid ? 'input-valid' : 'input-invalid') : ''}`}
+              value={city} 
+              onChange={e => handleChange('city', e.target.value)} 
+            />
+          </div>
+        </div>
+        <div>
+          <div className="label">State * {isStateValid && <span className="text-green-400">✓</span>}</div>
+          <div className="relative">
+            <input 
+              className={`input ${state ? (isStateValid ? 'input-valid' : 'input-invalid') : ''}`}
+              value={state} 
+              onChange={e => handleChange('state', e.target.value)} 
+            />
+          </div>
+        </div>
+      </div>
+      <div>
+        <div className="label">Zip * {isZipValid && <span className="text-green-400">✓</span>}</div>
+        <div className="relative">
+          <input 
+            className={`input ${zip ? (isZipValid ? 'input-valid' : 'input-invalid') : ''}`}
+            value={zip} 
+            onChange={e => handleChange('zip', e.target.value)} 
+          />
+        </div>
+      </div>
       <div className="text-xs text-white/60">Auto-saved as you type</div>
     </div>
   )
@@ -357,6 +442,7 @@ function Address({ user, formData, onChange }: { user: User | null; formData: Pa
 
 function Birth({ user, formData, onChange }: { user: User | null; formData: Partial<User>; onChange: (d: Partial<User>) => void }) {
   const currentValue = formData.birthdate !== undefined ? formData.birthdate : (user?.birthdate || '');
+  const isValid = currentValue.length > 0;
 
   const handleChange = (value: string) => {
     onChange({ birthdate: value });
@@ -364,7 +450,17 @@ function Birth({ user, formData, onChange }: { user: User | null; formData: Part
 
   return (
     <div className="space-y-3">
-      <div><div className="label">Birthdate *</div><input className="input" type="date" value={currentValue} onChange={e => handleChange(e.target.value)} /></div>
+      <div>
+        <div className="label">Birthdate * {isValid && <span className="text-green-400">✓</span>}</div>
+        <div className="relative">
+          <input 
+            className={`input ${currentValue ? (isValid ? 'input-valid' : 'input-invalid') : ''}`}
+            type="date" 
+            value={currentValue} 
+            onChange={e => handleChange(e.target.value)} 
+          />
+        </div>
+      </div>
       <div className="text-xs text-white/60">Auto-saved as you type</div>
     </div>
   )
